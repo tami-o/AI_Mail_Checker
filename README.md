@@ -10,4 +10,6 @@ Flet    : 0.9.0
 python main.py
 
 localhost:8888/view1  
+または  
+127.0.0.1:8888/view1  
 がトップページです
