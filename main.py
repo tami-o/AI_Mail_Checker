@@ -2,6 +2,21 @@
 import flet as ft
 
 def main(page: ft.Page):
+    
+    # 情報入力画面における入力内容取得のためのTextFieldハンドラ
+    # View内に ft.TextField を直接記述されると ハンドラ.value での取得が通じない
+    page1_mes_field = ft.TextField(value="view1")
+
+    # メール確認画面における入力内容書き換えのためのTextFieldハンドラ
+    # View内に ft.TextField を直接記述されると ハンドラ.value での取得が通じない
+    page2_mes_field = ft.TextField(value="view2")
+
+    # 情報入力画面からメール確認画面への遷移における処理
+    def send_input(e):
+        print(page1_mes_field.value)
+        # 入力された情報で情報確認ページに移動
+        page2_mes_field.value = page1_mes_field.value
+        page.go("/view2")
 
     # 情報入力画面
     view1: ft.View = ft.View(
@@ -9,19 +24,20 @@ def main(page: ft.Page):
          [
             ft.AppBar(title=ft.Text("view1"),
                       bgcolor=ft.colors.BLUE),
-            ft.TextField(value="view1"),
+            page1_mes_field,
             ft.ElevatedButton(
-                "入力確認画面", on_click=lambda _: page.go("/view2")),
+                #"入力確認画面", on_click=lambda _: page.go("/view2")),
+                "入力確認画面", on_click=send_input),
         ]
     )
 
-    # メール確認画面git 
+    # メール確認画面 
     view2: ft.View = ft.View(
         "/view2", 
         [
             ft.AppBar(title=ft.Text("view2"),
                       bgcolor=ft.colors.RED),
-            ft.TextField(value="view2"),
+            page2_mes_field,
             ft.ElevatedButton(
                 "確定・送信", on_click=lambda _: page.go("/view3")),
         ]
