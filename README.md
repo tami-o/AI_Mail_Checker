@@ -1,10 +1,10 @@
-# AI_Mail_Checker
+# AI_Mail_Checker  
 
-送信メールに関する情報をChatGPTに送信し、チェックしてもらえるサービスです
+送信メールに関する情報をChatGPTに送信し、チェックしてもらえるサービスです  
 
-バージョン
-python  : 3.7.7
-Flet    : 0.9.0
+バージョン  
+python  : 3.7.7  
+Flet    : 0.9.0  
 
-実行
-python main.py
+実行  
+python main.py  
