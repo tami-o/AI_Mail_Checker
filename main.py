@@ -42,11 +42,10 @@ def main(page: ft.Page):
     view1: ft.View = ft.View(
         "/view1",
          [
-            ft.AppBar(title=ft.Text("view1"),
+            ft.AppBar(title=ft.Text("情報入力画面"),
                       bgcolor=ft.colors.BLUE),
             page1_mes_field,
             ft.ElevatedButton(
-                #"入力確認画面", on_click=lambda _: page.go("/view2")),
                 "入力確認画面", on_click=send_input),
         ]
     )
@@ -55,7 +54,7 @@ def main(page: ft.Page):
     view2: ft.View = ft.View(
         "/view2", 
         [
-            ft.AppBar(title=ft.Text("view2"),
+            ft.AppBar(title=ft.Text("メール確認画面"),
                       bgcolor=ft.colors.RED),
             page2_mes_field,
             ft.ElevatedButton(
@@ -67,7 +66,7 @@ def main(page: ft.Page):
     view3: ft.View = ft.View(
         "/view3", 
         [
-            ft.AppBar(title=ft.Text("view3"),
+            ft.AppBar(title=ft.Text("結果表示画面"),
                       bgcolor=ft.colors.RED),
             # 横並びに表示する為に Row の中に入れている
             ft.Row(
@@ -77,7 +76,7 @@ def main(page: ft.Page):
                 ]
             ),
             ft.ElevatedButton(
-                "最初の画面", on_click=main_screen),
+                "情報入力画面に戻る", on_click=main_screen),
         ]
     )
 
@@ -86,8 +85,10 @@ def main(page: ft.Page):
         if page.route != "/view3":
             page.views.append(view1)
             if page.route == "/view2":
+                # view1 の上に view2 が乗っている状態なので pop すると view1 に戻ることが可能
                 page.views.append(view2)
         else:
+            # view3 つまり結果画面からview2に戻れないように独立させる
             page.views.append(view3)
         page.update()
 
@@ -105,4 +106,5 @@ def main(page: ft.Page):
 
 
 if __name__ == "__main__":
+    # localhost:8888 で起動されている
     ft.app(target=main, port=8888, view=ft.WEB_BROWSER)
