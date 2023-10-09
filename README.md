@@ -7,4 +7,7 @@ python  : 3.7.7
 Flet    : 0.9.0  
 
 実行  
-python main.py  
+python main.py
+
+localhost:8888/view1  
+がトップページです
