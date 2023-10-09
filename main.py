@@ -10,6 +10,10 @@ def main(page: ft.Page):
     # メール確認画面における入力内容書き換えのためのTextFieldハンドラ
     # View内に ft.TextField を直接記述されると ハンドラ.value での取得が通じない
     page2_mes_field = ft.TextField(value="view2")
+    
+    # 結果表示画面における入力内容書き換えのためのTextFieldハンドラ
+    # View内に ft.TextField を直接記述されると ハンドラ.value での取得が通じない
+    page3_mes_field = ft.TextField(value="view3")
 
     # 情報入力画面からメール確認画面への遷移における処理
     def send_input(e):
@@ -17,6 +21,17 @@ def main(page: ft.Page):
         # 入力された情報で情報確認ページに移動
         page2_mes_field.value = page1_mes_field.value
         page.go("/view2")
+    
+    # メール確認画面から結果表示画面への遷移における処理
+    def send_mail(e):
+        print(page2_mes_field.value)
+        # TODO : chatGPTにリクエストを投げる
+        page3_mes_field.value = page2_mes_field.value
+        page.go("/view3")
+    
+    def main_screen(e):
+        page1_mes_field.value = "view1"
+        page.go("/view1")
 
     # 情報入力画面
     view1: ft.View = ft.View(
@@ -39,7 +54,7 @@ def main(page: ft.Page):
                       bgcolor=ft.colors.RED),
             page2_mes_field,
             ft.ElevatedButton(
-                "確定・送信", on_click=lambda _: page.go("/view3")),
+                "確定・送信", on_click=send_mail),
         ]
     )
 
@@ -49,9 +64,9 @@ def main(page: ft.Page):
         [
             ft.AppBar(title=ft.Text("view3"),
                       bgcolor=ft.colors.RED),
-            ft.TextField(value="view3"),
+            page3_mes_field,
             ft.ElevatedButton(
-                "最初の画面", on_click=lambda _: page.go("/view1")),
+                "最初の画面", on_click=main_screen),
         ]
     )
 
@@ -62,7 +77,7 @@ def main(page: ft.Page):
             if page.route == "/view2":
                 page.views.append(view2)
         else:
-            pass
+            page.views.append(view3)
         page.update()
 
     def view_pop(handler):
