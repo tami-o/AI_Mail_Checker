@@ -1,5 +1,6 @@
 # python using-flet
 import flet as ft
+import req_chatGPT
 
 def main(page: ft.Page):
     
@@ -14,6 +15,7 @@ def main(page: ft.Page):
     # 結果表示画面における入力内容書き換えのためのTextFieldハンドラ
     # View内に ft.TextField を直接記述されると ハンドラ.value での取得が通じない
     page3_mes_field = ft.TextField(value="view3")
+    page3_gpt_field = ft.TextField(value="view3")
 
     # 情報入力画面からメール確認画面への遷移における処理
     def send_input(e):
@@ -25,8 +27,11 @@ def main(page: ft.Page):
     # メール確認画面から結果表示画面への遷移における処理
     def send_mail(e):
         print(page2_mes_field.value)
-        # TODO : chatGPTにリクエストを投げる
+        # chatGPTにリクエストを投げる
+        chatGPT_res = req_chatGPT.request_chatGPT(page2_mes_field.value)
+        # 入力された情報とChatGPTの回答を持って結果表示画面に移動
         page3_mes_field.value = page2_mes_field.value
+        page3_gpt_field.value = chatGPT_res
         page.go("/view3")
     
     def main_screen(e):
@@ -64,7 +69,13 @@ def main(page: ft.Page):
         [
             ft.AppBar(title=ft.Text("view3"),
                       bgcolor=ft.colors.RED),
-            page3_mes_field,
+            # 横並びに表示する為に Row の中に入れている
+            ft.Row(
+                [
+                    page3_mes_field,
+                    page3_gpt_field,
+                ]
+            ),
             ft.ElevatedButton(
                 "最初の画面", on_click=main_screen),
         ]
