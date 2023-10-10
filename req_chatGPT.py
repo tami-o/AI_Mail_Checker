@@ -19,8 +19,8 @@ def request_chatGPT(入力情報):
 """
 
 # 今はとりあえず動いている風にみせているだけ
-def request_chatGPT(mes):
+def request_chatGPT(request_list):
     # メール確認画面から受け取った情報を API に埋め込んで投げる
-    print("req_chatGPT : receive ", mes)
+    print("req_chatGPT : receive ", request_list[0].value)
     
     return "これが ChatGPT の答えや！"

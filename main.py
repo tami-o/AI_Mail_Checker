@@ -2,6 +2,7 @@
 import flet as ft
 import req_chatGPT
 
+
 def main(page: ft.Page):
     
     # 情報入力画面における入力内容取得のためのTextFieldハンドラ
@@ -17,18 +18,23 @@ def main(page: ft.Page):
     page3_mes_field = ft.TextField(value="view3")
     page3_gpt_field = ft.TextField(value="view3")
 
+    # ChatGPTリクエスト情報保存用のリスト
+    person_info = []
+
     # 情報入力画面からメール確認画面への遷移における処理
-    def send_input(e):
+    def save_input(e):
         print(page1_mes_field.value)
-        # 入力された情報で情報確認ページに移動
-        page2_mes_field.value = page1_mes_field.value
+        # 入力された情報をChatGPTのリクエスト用リストに保存
+        person_info.append(page1_mes_field)
+        print(len(person_info))
+        #page2_mes_field.value = page1_mes_field.value
         page.go("/view2")
     
     # メール確認画面から結果表示画面への遷移における処理
     def send_mail(e):
         print(page2_mes_field.value)
         # chatGPTにリクエストを投げる
-        chatGPT_res = req_chatGPT.request_chatGPT(page2_mes_field.value)
+        chatGPT_res = req_chatGPT.request_chatGPT(person_info)
         # 入力された情報とChatGPTの回答を持って結果表示画面に移動
         page3_mes_field.value = page2_mes_field.value
         page3_gpt_field.value = chatGPT_res
@@ -36,6 +42,7 @@ def main(page: ft.Page):
     
     def main_screen(e):
         page1_mes_field.value = "view1"
+        page2_mes_field.value = "view2"
         page.go("/view1")
 
     # 情報入力画面
@@ -46,7 +53,7 @@ def main(page: ft.Page):
                       bgcolor=ft.colors.BLUE),
             page1_mes_field,
             ft.ElevatedButton(
-                "入力確認画面", on_click=send_input),
+                "入力確認画面", on_click=save_input),
         ]
     )
 
