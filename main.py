@@ -19,13 +19,13 @@ def main(page: ft.Page):
     page3_gpt_field = ft.TextField(value="view3")
 
     # ChatGPTリクエスト情報保存用のリスト
-    person_info = []
+    person_info = {}
 
     # 情報入力画面からメール確認画面への遷移における処理
     def save_input(e):
         print(page1_mes_field.value)
         # 入力された情報をChatGPTのリクエスト用リストに保存
-        person_info.append(page1_mes_field)
+        person_info['role_system'] = page1_mes_field
         print(len(person_info))
         #page2_mes_field.value = page1_mes_field.value
         page.go("/view2")
