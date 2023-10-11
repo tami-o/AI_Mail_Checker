@@ -92,15 +92,17 @@ def main(page: ft.Page):
             # 横並びに表示する為に Row の中に入れている
             ft.Row(
                 [
-                    dst_f_p3,
+                    ft.Column([
+                        dst_f_p3,           
+                        cc_f_p3,
+                        bcc_f_p3,
+                        src_f_p3,
+                        sub_f_p3,
+                        mail_f_p3
+                    ]),
                     gpt_f_p3
                 ]
             ),
-            cc_f_p3,
-            bcc_f_p3,
-            src_f_p3,
-            sub_f_p3,
-            mail_f_p3,
             ft.ElevatedButton(
                 "情報入力画面に戻る", on_click=main_screen),
         ]

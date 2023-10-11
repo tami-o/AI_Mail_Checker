@@ -25,4 +25,4 @@ def request_chatGPT(request_list):
     print("req_chatGPT : role_system receive ", request_list['role_system'])
     print("req_chatGPT : role_user receive ", request_list['role_user'])
     
-    return "これが ChatGPT の答えやaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa！"
+    return "これが ChatGPT の答えや！"
