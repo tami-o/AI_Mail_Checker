@@ -1,48 +1,54 @@
 # python using-flet
 import flet as ft
 import req_chatGPT
+import info_class
 
 
 def main(page: ft.Page):
-    
-    # 情報入力画面における入力内容取得のためのTextFieldハンドラ
-    # View内に ft.TextField を直接記述されると ハンドラ.value での取得が通じない
-    page1_mes_field = ft.TextField(value="view1")
 
-    # メール確認画面における入力内容書き換えのためのTextFieldハンドラ
-    # View内に ft.TextField を直接記述されると ハンドラ.value での取得が通じない
-    page2_mes_field = ft.TextField(value="view2")
+    # Page1 情報入力画面表示処理
+    page1_fields = info_class.Page1Fields()
+    add_f_p1, org_f_p1, dep_f_p1, sup_f_p1 = page1_fields.install_field()
+
+    # Page2 メール入力画面表示処理
+    page2_fields = info_class.Page2Fields()
+    dst_f_p2, cc_f_p2, bcc_f_p2, src_f_p2, sub_f_p2, mail_f_p2 = page2_fields.install_field()
     
-    # 結果表示画面における入力内容書き換えのためのTextFieldハンドラ
-    # View内に ft.TextField を直接記述されると ハンドラ.value での取得が通じない
-    page3_mes_field = ft.TextField(value="view3")
-    page3_gpt_field = ft.TextField(value="view3")
+    # Page3 結果表示画面表示処理
+    page3_fields = info_class.Page3Fields()
+    dst_f_p3, cc_f_p3, bcc_f_p3, src_f_p3, sub_f_p3, mail_f_p3, gpt_f_p3 = page3_fields.install_field()    
 
     # ChatGPTリクエスト情報保存用のリスト
-    person_info = {}
+    request_info = {}
 
-    # 情報入力画面からメール確認画面への遷移における処理
+    # Page1(情報入力画面)からPage2(メール入力画面)への遷移における処理
     def save_input(e):
-        print(page1_mes_field.value)
+        print(page1_fields.get_address())
         # 入力された情報をChatGPTのリクエスト用リストに保存
-        person_info['role_system'] = page1_mes_field
-        print(len(person_info))
-        #page2_mes_field.value = page1_mes_field.value
+        request_info['role_system'] = page1_fields.all_return()
         page.go("/view2")
     
-    # メール確認画面から結果表示画面への遷移における処理
+    # Page2(メール入力画面)からPage3(結果表示画面)への遷移における処理
     def send_mail(e):
-        print(page2_mes_field.value)
+        print(page2_fields.get_dst())
+        # 入力された情報をChatGPTのリクエスト用リストに保存
+        request_info['role_user'] = page2_fields.all_return()
         # chatGPTにリクエストを投げる
-        chatGPT_res = req_chatGPT.request_chatGPT(person_info)
+        chatGPT_res = req_chatGPT.request_chatGPT(request_info)
         # 入力された情報とChatGPTの回答を持って結果表示画面に移動
-        page3_mes_field.value = page2_mes_field.value
-        page3_gpt_field.value = chatGPT_res
+        page3_fields.set_dst(page2_fields.get_dst())
+        page3_fields.set_cc(page2_fields.get_cc())
+        page3_fields.set_bcc(page2_fields.get_bcc())
+        page3_fields.set_src(page2_fields.get_src())
+        page3_fields.set_subject(page2_fields.get_subject())
+        page3_fields.set_mail(page2_fields.get_mail())
+        page3_fields.set_gpt(chatGPT_res)
         page.go("/view3")
     
+    # Page3(結果表示画面)からPage1((情報入力画面)への遷移における初期化処理
     def main_screen(e):
-        page1_mes_field.value = "view1"
-        page2_mes_field.value = "view2"
+        page1_fields.all_clear()
+        page2_fields.all_clear()
         page.go("/view1")
 
     # 情報入力画面
@@ -51,9 +57,12 @@ def main(page: ft.Page):
          [
             ft.AppBar(title=ft.Text("情報入力画面"),
                       bgcolor=ft.colors.BLUE),
-            page1_mes_field,
+            add_f_p1,
+            org_f_p1,
+            dep_f_p1,
+            sup_f_p1,
             ft.ElevatedButton(
-                "入力確認画面", on_click=save_input),
+                "メール入力画面", on_click=save_input),
         ]
     )
 
@@ -61,9 +70,14 @@ def main(page: ft.Page):
     view2: ft.View = ft.View(
         "/view2", 
         [
-            ft.AppBar(title=ft.Text("メール確認画面"),
+            ft.AppBar(title=ft.Text("メール入力画面"),
                       bgcolor=ft.colors.RED),
-            page2_mes_field,
+            dst_f_p2,
+            cc_f_p2,
+            bcc_f_p2,
+            src_f_p2,
+            sub_f_p2,
+            mail_f_p2,
             ft.ElevatedButton(
                 "確定・送信", on_click=send_mail),
         ]
@@ -78,10 +92,15 @@ def main(page: ft.Page):
             # 横並びに表示する為に Row の中に入れている
             ft.Row(
                 [
-                    page3_mes_field,
-                    page3_gpt_field,
+                    dst_f_p3,
+                    gpt_f_p3
                 ]
             ),
+            cc_f_p3,
+            bcc_f_p3,
+            src_f_p3,
+            sub_f_p3,
+            mail_f_p3,
             ft.ElevatedButton(
                 "情報入力画面に戻る", on_click=main_screen),
         ]

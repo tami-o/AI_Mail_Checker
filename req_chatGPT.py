@@ -21,6 +21,8 @@ def request_chatGPT(入力情報):
 # 今はとりあえず動いている風にみせているだけ
 def request_chatGPT(request_list):
     # メール確認画面から受け取った情報を API に埋め込んで投げる
-    print("req_chatGPT : receive ", request_list['role_system'])
+    print(request_list)
+    print("req_chatGPT : role_system receive ", request_list['role_system'])
+    print("req_chatGPT : role_user receive ", request_list['role_user'])
     
-    return "これが ChatGPT の答えや！"
+    return "これが ChatGPT の答えやaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa！"
